@@ -42,6 +42,7 @@
                 android:layout_marginBottom="30dp"
                 android:gravity="center|center_horizontal|center_vertical"
                 android:text="로그인"
+                android:textColor="@color/text_color_deep_purple"
                 android:textSize="24sp" />
 
             <Button
@@ -55,7 +56,7 @@
                 android:layout_marginBottom="40dp"
                 android:text="네이버로 로그인"
                 android:textColor="#000000"
-                app:backgroundTint="#A7D372" />
+                app:backgroundTint="@color/line_color_light_purple" />
 
             <Button
                 android:id="@+id/kakaobutton"
@@ -68,7 +69,7 @@
                 android:layout_marginBottom="40dp"
                 android:text="카카오톡으로 로그인"
                 android:textColor="#000000"
-                app:backgroundTint="#F1E260" />
+                app:backgroundTint="@color/point_color_yellow" />
         </LinearLayout>
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
