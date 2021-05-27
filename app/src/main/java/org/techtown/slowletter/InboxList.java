@@ -159,16 +159,12 @@ public class InboxList extends AppCompatActivity {
         public void OpenbasicSetting(InboxItemViewHolder viewHolder, View convertView, Inbox_Item inbox_item){
             viewHolder.d_day_Tv = (TextView)convertView.findViewById(R.id.receive_day_open_textview);
             viewHolder.d_day_Tv.setText(""+inbox_item.r_year+"."+inbox_item.r_month+"."+inbox_item.r_day);
-            viewHolder.sent_Tv  = (TextView)convertView.findViewById(R.id.sent_day_open_textview);
-            viewHolder.sent_Tv.setText(""+inbox_item.s_year+"."+inbox_item.s_month+"."+inbox_item.s_day);
         }
 
         //닫힌 편지 기본 ui 세팅
         public void ClosebasicSetting(InboxItemViewHolder viewHolder, View convertView, Inbox_Item inbox_item, long d_day){
             viewHolder.d_day_Tv = (TextView)convertView.findViewById(R.id.d_day_close_textview);
             viewHolder.d_day_Tv.setText("D - "+Math.abs(d_day));
-            viewHolder.sent_Tv  = (TextView)convertView.findViewById(R.id.sent_day_close_textview);
-            viewHolder.sent_Tv.setText(""+inbox_item.s_year+"."+inbox_item.s_month+"."+inbox_item.s_day);
         }
     }
 
