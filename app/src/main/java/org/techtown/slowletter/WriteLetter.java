@@ -37,6 +37,7 @@ public class WriteLetter extends AppCompatActivity {
 
         Button cancel = (Button)findViewById(R.id.cancelbutton);
         Button send = (Button)findViewById(R.id.sendbutton);
+        Button writingpad = (Button)findViewById(R.id.changeback);
         TextView contents = (TextView)findViewById(R.id.cont_letter);
         EditText receivedate = (EditText)findViewById(R.id.receivedate);
 
@@ -48,6 +49,16 @@ public class WriteLetter extends AppCompatActivity {
                 new DatePickerDialog(WriteLetter.this, myDatePicker, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
+
+        //편지지 배경 선택 버튼 클릭시 편지지 배경 선택 화면으로 넘어감
+        writingpad.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),SelectWritingpad.class);
+                startActivity(intent);
+            }
+        });
+
         //취소 버튼 클릭시 정말 취소할 것인지 묻는 팝업창 실행
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
