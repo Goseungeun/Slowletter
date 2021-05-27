@@ -4,5 +4,4 @@ import android.widget.TextView;
 
 public class InboxItemViewHolder {
     TextView d_day_Tv;
-    TextView sent_Tv;
 }
