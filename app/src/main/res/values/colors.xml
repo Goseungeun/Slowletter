@@ -9,7 +9,7 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="background">#FFFCF0</color>
-    <color name="line_color_light_purple">#D4D1ED</color>
+    <color name="line_color_light_purple">#DEDCEE</color>
     <color name="text_color_deep_purple">#6A60A9</color>
     <color name="point_color_yellow">#FBD14B</color>
 </resources>
