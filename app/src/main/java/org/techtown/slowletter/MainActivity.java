@@ -15,11 +15,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button button1=findViewById(R.id.write_button);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getApplicationContext(),InboxList.class);
+                startActivity(intent);
+            }
+        });
+
+
         Button button2=findViewById(R.id.inbox_button);
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(MainActivity.this,MainActivity.class);
+                Intent intent=new Intent(getApplicationContext(),InboxList.class);
                 startActivity(intent);
             }
         });
