@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="-49dp">
+
+        <LinearLayout
+            android:layout_width="312dp"
+            android:layout_height="546dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="50dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="92dp"
+            android:layout_marginEnd="49dp"
+            android:layout_marginRight="49dp"
+            android:layout_marginBottom="93dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/logintextView"
+                android:layout_width="199dp"
+                android:layout_height="67dp"
+                android:layout_marginStart="60dp"
+                android:layout_marginLeft="60dp"
+                android:layout_marginEnd="60dp"
+                android:layout_marginRight="60dp"
+                android:layout_marginBottom="30dp"
+                android:gravity="center|center_horizontal|center_vertical"
+                android:text="로그인"
+                android:textColor="@color/text_color_deep_purple"
+                android:textSize="24sp" />
+
+            <Button
+                android:id="@+id/naverbutton"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="40dp"
+                android:text="네이버로 로그인"
+                android:textColor="#000000"
+                app:backgroundTint="@color/line_color_light_purple" />
+
+            <Button
+                android:id="@+id/kakaobutton"
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="40dp"
+                android:text="카카오톡으로 로그인"
+                android:textColor="#000000"
+                app:backgroundTint="@color/point_color_yellow" />
+        </LinearLayout>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

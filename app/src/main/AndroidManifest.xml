@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".WriteLetter"/>
+        <activity android:name=".InboxList"/>
+        <activity android:name=".InboxView"/>
     </application>
 
 </manifest>
