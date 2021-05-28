@@ -19,17 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"></View>
 
-        <TextView
-            android:id="@+id/d_day_close_textview"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:text="D-000"
-            android:textColor="@color/text_color_deep_purple"
-            android:textStyle="bold" />
-
-
 
         <ImageView
             android:id="@+id/mail"
@@ -39,6 +28,15 @@
             app:srcCompat="@drawable/email_close"
             app:tint="@color/line_color_light_purple" />
 
+        <TextView
+            android:id="@+id/d_day_close_textview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="D-000"
+            android:textColor="@color/text_color_deep_purple"
+            android:textStyle="bold" />
 
 
         <View
