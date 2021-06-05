@@ -1,14 +1,19 @@
 package org.techtown.slowletter;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -26,6 +31,9 @@ import android.widget.EditText;
 
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 
 
@@ -33,7 +41,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
+
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -45,6 +55,7 @@ import java.util.Locale;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 
+@SuppressWarnings("deprecation")
 public class WriteLetter extends AppCompatActivity {
     private static final String TAG = "WriteLetter";
 
@@ -68,7 +79,15 @@ public class WriteLetter extends AppCompatActivity {
     private EditText contents;
     private EditText receivedate;
 
+///////
+    final static int TAKE_PICTURE = 1;
+    String mCurrentPhotoPath;
+    final static int REQUEST_TAKE_PHOTO = 1;
 
+
+
+
+///////
 
     DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -92,6 +111,13 @@ public class WriteLetter extends AppCompatActivity {
          contents = (EditText) findViewById(R.id.cont_letter);
          receivedate = (EditText)findViewById(R.id.receivedate);
 
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) { Log.d(TAG, "권한 설정 완료"); }
+            else {
+                Log.d(TAG, "권한 설정 요청");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+            }
+        }
 
 
         //받는 날짜 클릭시 날짜 설정하는 datepicker 실행
@@ -113,18 +139,7 @@ public class WriteLetter extends AppCompatActivity {
         });
 
 
-        pictureImageView = (ImageView)findViewById(R.id.pictureImageView);
-        pictureImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(isPhotoCaptured || isPhotoFileSaved) {
-                    showPhotoDialog(AppConstants.CONTENT_PHOTO_EX);
-                } else {
-                    showPhotoDialog(AppConstants.CONTENT_PHOTO);
-                }
-            }
-        });
-
+        initUI();
 
 
 
@@ -152,6 +167,32 @@ public class WriteLetter extends AppCompatActivity {
             }
         });
 
+    }
+
+    // 권한 요청
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.d(TAG, "onRequestPermissionsResult");
+        if (grantResults[0] == PackageManager.PERMISSION_GRANTED && grantResults[1] == PackageManager.PERMISSION_GRANTED ) {
+            Log.d(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
+        }
+    }
+
+    private void initUI(){
+        pictureImageView = (ImageView)findViewById(R.id.pictureImageView);
+        pictureImageView.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View v) {
+                if(isPhotoCaptured || isPhotoFileSaved) {
+                    showPhotoDialog(AppConstants.CONTENT_PHOTO_EX);
+                } else {
+                    showPhotoDialog(AppConstants.CONTENT_PHOTO);
+                }
+            }
+        });
 
     }
 
@@ -164,15 +205,111 @@ public class WriteLetter extends AppCompatActivity {
     }
 
 
-    public void setPicture(String picturePath, int sampleSize) {
+    public void setPicture(String picturePath, int sampleSize) throws IOException {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = sampleSize;
         resultPhotoBitmap = BitmapFactory.decodeFile(picturePath, options);
 
+        ExifInterface exif = new ExifInterface(picturePath);
+        int exifOrientation = exif.getAttributeInt(
+                ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+        int exifDegree = exifOrientationToDegrees(exifOrientation);
+        resultPhotoBitmap = rotate(resultPhotoBitmap, exifDegree);
+
+
+
         pictureImageView.setImageBitmap(resultPhotoBitmap);
+
+
+
+    }
+
+    public Bitmap rotate(Bitmap bitmap, int degrees)
+    {
+        if(degrees != 0 && bitmap != null)
+        {
+            Matrix m = new Matrix();
+            m.setRotate(degrees, (float) bitmap.getWidth() / 2,
+                    (float) bitmap.getHeight() / 2);
+
+            try
+            {
+                Bitmap converted = Bitmap.createBitmap(bitmap, 0, 0,
+                        bitmap.getWidth(), bitmap.getHeight(), m, true);
+                if(bitmap != converted)
+                {
+                    bitmap.recycle();
+                    bitmap = converted;
+                }
+            }
+            catch(OutOfMemoryError ex)
+            {
+                // 메모리가 부족하여 회전을 시키지 못할 경우 그냥 원본을 반환합니다.
+            }
+        }
+        return bitmap;
     }
 
 
+    public int exifOrientationToDegrees(int exifOrientation)
+    {
+        if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_90)
+        {
+            return 90;
+        }
+        else if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_180)
+        {
+            return 180;
+        }
+        else if(exifOrientation == ExifInterface.ORIENTATION_ROTATE_270)
+        {
+            return 270;
+        }
+        return 0;
+    }
+    public static Bitmap rotateBitmap(Bitmap bitmap, int orientation) {
+
+        Matrix matrix = new Matrix();
+        switch (orientation) {
+            case ExifInterface.ORIENTATION_NORMAL:
+                return bitmap;
+            case ExifInterface.ORIENTATION_FLIP_HORIZONTAL:
+                matrix.setScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_180:
+                matrix.setRotate(180);
+                break;
+            case ExifInterface.ORIENTATION_FLIP_VERTICAL:
+                matrix.setRotate(180);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_TRANSPOSE:
+                matrix.setRotate(90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_90:
+                matrix.setRotate(90);
+                break;
+            case ExifInterface.ORIENTATION_TRANSVERSE:
+                matrix.setRotate(-90);
+                matrix.postScale(-1, 1);
+                break;
+            case ExifInterface.ORIENTATION_ROTATE_270:
+                matrix.setRotate(-90);
+                break;
+            default:
+                return bitmap;
+        }
+        try {
+            Bitmap bmRotated = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.recycle();
+            return bmRotated;
+        }
+        catch (OutOfMemoryError e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
     public void showPhotoDialog(int id) {
         AlertDialog.Builder builder = null;
@@ -249,7 +386,7 @@ public class WriteLetter extends AppCompatActivity {
             file = createFile();
         }
 
-        Uri fileUri = FileProvider.getUriForFile(this,"org.techtown.DGU.fileprovider", file);
+        Uri fileUri = FileProvider.getUriForFile(this,"org.techtown.slowletter.fileprovider", file);
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
         if (intent.resolveActivity(this.getPackageManager()) != null) {
@@ -277,20 +414,27 @@ public class WriteLetter extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
 
+       // if(intent!=null){
         switch(requestCode) {
             case AppConstants.REQ_PHOTO_CAPTURE:  // 사진 찍는 경우
                 Log.d(TAG, "onActivityResult() for REQ_PHOTO_CAPTURE.");
 
                 Log.d(TAG, "resultCode : " + resultCode);
 
-                setPicture(file.getAbsolutePath(), 8);
+                try {
+                    setPicture(file.getAbsolutePath(), 8);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
                 break;
 
             case AppConstants.REQ_PHOTO_SELECTION:  // 사진을 앨범에서 선택하는 경우
                 Log.d(TAG, "onActivityResult() for REQ_PHOTO_SELECTION.");
 
+               // final Uri selectedImage = Uri.parse(intent.getStringExtra("image"));
                 Uri selectedImage = intent.getData();
+
                 String[] filePathColumn = {MediaStore.Images.Media.DATA};
 
                 Cursor cursor = this.getContentResolver().query(selectedImage, filePathColumn, null, null, null);
@@ -301,12 +445,13 @@ public class WriteLetter extends AppCompatActivity {
                 cursor.close();
 
                 resultPhotoBitmap = decodeSampledBitmapFromResource(new File(filePath), pictureImageView.getWidth(), pictureImageView.getHeight());
-                pictureImageView.setImageBitmap(resultPhotoBitmap);
+                //pictureImageView.setImageBitmap(resultPhotoBitmap);
+                pictureImageView.setImageURI(selectedImage);
                 isPhotoCaptured = true;
 
                 break;
-
         }
+       //}
     }
 
     public static Bitmap decodeSampledBitmapFromResource(File res, int reqWidth, int reqHeight) {
@@ -354,9 +499,6 @@ public class WriteLetter extends AppCompatActivity {
 
         return curDateStr;
     }
-
-
-
 
 
 
