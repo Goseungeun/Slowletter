@@ -23,7 +23,6 @@
         <activity android:name=".WriteLetter"/>
         <activity android:name=".InboxList"/>
         <activity android:name=".InboxView"/>
-        <activity android:name=".SelectWritingpad"/>
 
     </application>
 
