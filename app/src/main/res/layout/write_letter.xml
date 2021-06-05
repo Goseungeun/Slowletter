@@ -34,47 +34,58 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:gravity="right"
+        android:gravity="center|right"
         android:text="편지지 배경선택"
         android:textColor="@color/text_color_deep_purple"
         app:backgroundTint="@color/line_color_light_purple" />
 
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="592dp">
-
-
-    <ImageView
-        android:id="@+id/weatherIcon"
-        android:layout_width="51dp"
-        android:layout_height="49dp"
-        android:layout_gravity="right"
-        app:srcCompat="@drawable/email_close" />
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical" >
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="오늘의 날씨 :   " />
+
+                <ImageView
+                    android:id="@+id/weatherIcon"
+                    android:layout_width="51dp"
+                    android:layout_height="49dp"
+                    android:layout_gravity="right"
+                    app:srcCompat="@drawable/email_close" />
+
+            </LinearLayout>
 
             <ImageView
                 android:id="@+id/pictureImageView"
                 android:layout_width="match_parent"
                 android:layout_height="248dp"
-                android:layout_margin="8dp"
                 app:srcCompat="@drawable/imagetoset" />
-
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="51dp"
-                android:layout_height="49dp"
-                android:layout_gravity="right"
-                app:srcCompat="@drawable/email_close" />
 
             <EditText
                 android:id="@+id/cont_letter"
                 android:layout_width="match_parent"
-                android:layout_height="221dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="5dp"
                 android:layout_weight="1"
@@ -85,6 +96,8 @@
                 android:gravity="top"
                 android:hint="편지 내용을 입력하세요"
                 android:inputType="textMultiLine|text"
+                android:minHeight="200dp"
+                android:padding="10dp"
                 android:textColor="@color/text_color_deep_purple" />
 
             <LinearLayout
@@ -119,10 +132,8 @@
                     android:textColor="@color/text_color_deep_purple"
                     app:backgroundTint="@color/line_color_light_purple" />
             </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
-
-
-    -
 
 </LinearLayout>
