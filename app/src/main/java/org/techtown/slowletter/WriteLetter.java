@@ -108,9 +108,17 @@ public class WriteLetter extends AppCompatActivity {
         final ColorPicker colorPicker = new ColorPicker(this);
         ArrayList<String> colors = new ArrayList<>();   //color 넣을 list
 
-        colors.add("#ce93d8");
-        colors.add("#b39ddb");
-        colors.add("#9fa8da");
+        colors.add("#FFE4E1");
+        colors.add("#FFEBCD");
+        colors.add("#FFFFE0");
+        colors.add("#FFF8DC");
+        colors.add("#FAEBD7");
+        colors.add("#FFEFD5");
+        colors.add("#FFFACD");
+        colors.add("#F5F5DC");
+        colors.add("#FAF0E6");
+        colors.add("#FDF5E6");
+
 
         colorPicker.setColors(colors).setColumns(5).setRoundColorButton(true).setOnChooseColorListener(new ColorPicker.OnChooseColorListener(){
             @Override
