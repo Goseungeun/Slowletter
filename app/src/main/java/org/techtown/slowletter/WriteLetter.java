@@ -54,6 +54,7 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.net.URL;
 
@@ -95,13 +96,14 @@ public class WriteLetter extends AppCompatActivity {
     private Button writingpad;
     private EditText contents;
     private EditText receivedate;
-
-
     private ImageView weatherIcon;
+    private int _backcolor;
 
     final static int TAKE_PICTURE = 1;
     String mCurrentPhotoPath;
     final static int REQUEST_TAKE_PHOTO = 1;
+
+    Weather weather;
 
 
 
@@ -126,7 +128,6 @@ public class WriteLetter extends AppCompatActivity {
          writingpad = (Button)findViewById(R.id.changeback);
          contents = (EditText) findViewById(R.id.cont_letter);
          receivedate = (EditText)findViewById(R.id.receivedate);
-
          weatherIcon = (ImageView)findViewById(R.id.weatherIcon);
 
 
@@ -187,6 +188,74 @@ public class WriteLetter extends AppCompatActivity {
             }
         });
 
+        //Weather 실행
+        weather = new Weather();
+        weather.GetResult();
+
+
+        send.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sendletter();
+
+                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+    }
+
+    //DB연결
+    private void sendletter() {
+        //WriteDate 초기화
+        Date time = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
+        String _writeDate = sdf.format(time);
+
+        String _receivedate= receivedate.getText().toString().substring(10);
+        String _context = ""+contents.getText().toString();
+        String _weather = ""+weather.WeatherText;
+        //String _picture= savepicture();
+        String _picture="";
+
+        String sql = "insert into " + LetterDatabase.TABLE_LETTER +
+                "(WRITEDATE, RECEIVEDATE, CONTEXT, BACKCOLOR, WEATHER, PICTURE) values(" +
+                "'"+ _writeDate + "', " +
+                "'"+ _receivedate + "', " +
+                "'"+ _context + "', " +
+                "'"+ _backcolor + "', " +
+                "'"+ _weather + "', " +
+                "'"+ _picture + "')";
+        Log.i(TAG, "!!!여기다!!!!" + sql);
+        LetterDatabase db = LetterDatabase.getInstance(getApplicationContext());
+        db.execSQL(sql);
+
+    }
+
+    private String savepicture() {
+        if (resultPhotoBitmap == null) {
+            return "";
+        }
+
+        File photoFolder = new File(AppConstants.FOLDER_PHOTO);
+
+        if(!photoFolder.isDirectory()) {
+            Log.d(TAG, "creating photo folder : " + photoFolder);
+            photoFolder.mkdirs();
+        }
+
+        String photoFilename = createFilename();
+        String picturePath = photoFolder + File.separator + photoFilename;
+
+        try {
+            FileOutputStream outstream = new FileOutputStream(picturePath);
+            resultPhotoBitmap.compress(Bitmap.CompressFormat.PNG, 100, outstream);
+            outstream.close();
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+        return picturePath;
     }
 
     // 권한 요청
@@ -214,9 +283,7 @@ public class WriteLetter extends AppCompatActivity {
             }
         });
 
-        //Weather 실행
-        Weather weather = new Weather();
-        weather.GetResult();
+
 
     }
 
@@ -546,6 +613,7 @@ public class WriteLetter extends AppCompatActivity {
             @Override
             public void onChooseColor(int position, int color){
                contents.setBackgroundColor(color);
+               _backcolor = color;
             }
 
             @Override

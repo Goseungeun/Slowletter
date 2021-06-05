@@ -20,7 +20,7 @@ public class LetterDatabase {
     private SQLiteDatabase db;
     private Context context;
 
-    private LetterDatabase(Context context){
+    LetterDatabase(Context context){
         this.context = context;
     }
 
@@ -127,6 +127,7 @@ public class LetterDatabase {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             println("Upgrading database from version" + oldVersion + "to " + newVersion + ".");
         }
+
     }
 
     private void println(String msg){
