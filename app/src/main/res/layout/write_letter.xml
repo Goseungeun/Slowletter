@@ -22,13 +22,15 @@
             android:inputType="date"
             android:text="편지 받을 날짜 : 0000/00/00"
             android:textColor="@color/text_color_deep_purple" />
+
     </LinearLayout>
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/changeback"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:gravity="right"
         android:text="편지지 배경선택"
         android:textColor="@color/text_color_deep_purple"
         app:backgroundTint="@color/line_color_light_purple" />
