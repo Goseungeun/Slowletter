@@ -97,6 +97,7 @@ public class WriteLetter extends AppCompatActivity {
     private EditText contents;
     private EditText receivedate;
     private ImageView weatherIcon;
+    private int _backcolor;
 
     final static int TAKE_PICTURE = 1;
     String mCurrentPhotoPath;
@@ -196,6 +197,9 @@ public class WriteLetter extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sendletter();
+
+                Intent intent=new Intent(getApplicationContext(),MainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -209,10 +213,10 @@ public class WriteLetter extends AppCompatActivity {
         String _writeDate = sdf.format(time);
 
         String _receivedate= receivedate.getText().toString().substring(10);
-        String _context = contents.getText().toString();
-        int _backcolor=contents.getSolidColor();
-        String _weather = weather.WeatherText;
-        String _picture= savepicture();
+        String _context = ""+contents.getText().toString();
+        String _weather = ""+weather.WeatherText;
+        //String _picture= savepicture();
+        String _picture="";
 
         String sql = "insert into " + LetterDatabase.TABLE_LETTER +
                 "(WRITEDATE, RECEIVEDATE, CONTEXT, BACKCOLOR, WEATHER, PICTURE) values(" +
@@ -222,7 +226,7 @@ public class WriteLetter extends AppCompatActivity {
                 "'"+ _backcolor + "', " +
                 "'"+ _weather + "', " +
                 "'"+ _picture + "')";
-        Log.d(TAG, "sql : " + sql);
+        Log.i(TAG, "!!!여기다!!!!" + sql);
         LetterDatabase db = LetterDatabase.getInstance(getApplicationContext());
         db.execSQL(sql);
 
@@ -609,6 +613,7 @@ public class WriteLetter extends AppCompatActivity {
             @Override
             public void onChooseColor(int position, int color){
                contents.setBackgroundColor(color);
+               _backcolor = color;
             }
 
             @Override
