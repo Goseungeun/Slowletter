@@ -20,14 +20,14 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".WriteLetter"/>
+        <activity android:exported="true" android:name=".WriteLetter"/>
         <activity android:name=".InboxList"/>
         <activity android:name=".InboxView"/>
 
 
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="org.techtown.DGU.fileprovider"
+            android:authorities="org.techtown.slowletter.fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
             <meta-data
@@ -35,5 +35,11 @@
                 android:resource="@xml/external" />
         </provider>
     </application>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-feature android:name="android.hardware.camera" android:required="true"/>
+
 
 </manifest>

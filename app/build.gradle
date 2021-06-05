@@ -39,5 +39,7 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.airbnb.android:lottie:3.0.7'
     implementation 'petrov.kristiyan:colorpicker-library:1.1.10'
+//tedpermission
+    implementation 'gun0912.ted:tedpermission:2.2.3'//권한 요청을 위한 팝업을 쉽게 구성하기 위해
 
 }

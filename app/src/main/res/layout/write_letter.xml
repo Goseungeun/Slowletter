@@ -37,70 +37,81 @@
         android:textColor="@color/text_color_deep_purple"
         app:backgroundTint="@color/line_color_light_purple" />
 
-    <ImageView
-        android:id="@+id/pictureImageView"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="268dp"
-        android:layout_margin="8dp"
-        app:srcCompat="@drawable/imagetoset" />
+        android:layout_height="592dp">
 
-    <ImageView
-        android:id="@+id/imageView3"
-        android:layout_width="51dp"
-        android:layout_height="49dp"
-        android:layout_gravity="right"
-        app:srcCompat="@drawable/email_close" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/cont_letter"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
-        android:layout_weight="1"
-        android:background="@color/background"
-        android:editable="true"
-        android:enabled="true"
-        android:freezesText="true"
-        android:gravity="top"
-        android:hint="편지 내용을 입력하세요"
-        android:inputType="textMultiLine|text"
-        android:textColor="@color/text_color_deep_purple" />
+            <ImageView
+                android:id="@+id/pictureImageView"
+                android:layout_width="match_parent"
+                android:layout_height="248dp"
+                android:layout_margin="8dp"
+                app:srcCompat="@drawable/imagetoset" />
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="51dp"
+                android:layout_height="49dp"
+                android:layout_gravity="right"
+                app:srcCompat="@drawable/email_close" />
+
+            <EditText
+                android:id="@+id/cont_letter"
+                android:layout_width="match_parent"
+                android:layout_height="221dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@color/background"
+                android:editable="true"
+                android:enabled="true"
+                android:freezesText="true"
+                android:gravity="top"
+                android:hint="편지 내용을 입력하세요"
+                android:inputType="textMultiLine|text"
+                android:textColor="@color/text_color_deep_purple" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="107dp"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/cancelbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="취소"
+                    android:textColor="@color/text_color_deep_purple"
+                    app:backgroundTint="@color/line_color_light_purple" />
+
+                <Button
+                    android:id="@+id/sendbutton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:text="전송"
+                    android:textColor="@color/text_color_deep_purple"
+                    app:backgroundTint="@color/line_color_light_purple" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
 
 
     -
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/cancelbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:text="취소"
-            android:textColor="@color/text_color_deep_purple"
-            app:backgroundTint="@color/line_color_light_purple" />
-
-        <Button
-            android:id="@+id/sendbutton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:text="전송"
-            android:textColor="@color/text_color_deep_purple"
-            app:backgroundTint="@color/line_color_light_purple" />
-    </LinearLayout>
 
 </LinearLayout>
