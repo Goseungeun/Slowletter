@@ -161,8 +161,8 @@ public class WriteLetter extends AppCompatActivity {
             }
         });
 
-        //Weather 실행
 
+        //Weather 실행
         Weather weather = new Weather();
         weather.GetResult();
 
@@ -420,7 +420,6 @@ public class WriteLetter extends AppCompatActivity {
             //메서드가 실제로 통신 할 때 작동하는 함수
             @Override
             protected String doInBackground(String... strings) {
-                Log.i("!!!!doInBackground", "!!!!");
                 //파싱 시작
                 try {
                     URL url = new URL(WEATHER_URL);     // 인터넷 주소 처리.
@@ -430,8 +429,6 @@ public class WriteLetter extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                Log.i("!!!!doInBackground", "WeatherText :"+WeatherText+"!!!!");
-
                 return WeatherText;
             }
 
@@ -439,11 +436,18 @@ public class WriteLetter extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s)
             {
-                Log.i("!!!!onPostExecute", "Start!!!!");
                 super.onPostExecute(s);
                 if(WeatherText!=null){
-                    weatherIcon = (ImageView) weatherIcon.findViewById(R.id.weatherIcon);
-                    weatherIcon.setImageResource(R.drawable.arrow);
+                    switch(WeatherText){
+                        case "맑음": weatherIcon.setImageResource(R.drawable.weather_icon_1);break;
+                        case "구름 조금": weatherIcon.setImageResource(R.drawable.weather_icon_2);break;
+                        case "구름 많음": weatherIcon.setImageResource(R.drawable.weather_icon_3);break;
+                        case "흐림": weatherIcon.setImageResource(R.drawable.weather_icon_4);break;
+                        case "비": weatherIcon.setImageResource(R.drawable.weather_icon_5);break;
+                        case "눈/비": weatherIcon.setImageResource(R.drawable.weather_icon_6);break;
+                        case "눈": weatherIcon.setImageResource(R.drawable.weather_icon_7);break;
+                    }
+
                 }
             }
 
@@ -452,11 +456,8 @@ public class WriteLetter extends AppCompatActivity {
 
         //결과물 실행할 함수
         public void GetResult(){
-            Log.i("!!!!GetResult", "Start!!!!");
             WeatherHttpAsyncTask task = new WeatherHttpAsyncTask();
             task.execute();
-
-            Log.i("!!!!GetResult", "End!!!!");
         }
 
 
@@ -481,7 +482,6 @@ public class WriteLetter extends AppCompatActivity {
 
                 //데이터 받아오기
                 while (eventType != XmlPullParser.END_DOCUMENT) {
-                    Log.i("!!!!eventType", "들어오긴함!!!!");
                     switch (eventType)
                     {
                         case XmlPullParser.START_TAG:
@@ -489,7 +489,6 @@ public class WriteLetter extends AppCompatActivity {
                             break;
                         case XmlPullParser.TEXT:
                             if (tag.equals("wfKor")) {
-                                Log.i("!!!!eventType", "wfKor : " + parser.getText() + "!!!!");
                                 result = parser.getText();
                             }
                             break;
