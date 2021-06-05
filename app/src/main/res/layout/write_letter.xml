@@ -33,6 +33,20 @@
         android:textColor="@color/text_color_deep_purple"
         app:backgroundTint="@color/line_color_light_purple" />
 
+    <ImageView
+        android:id="@+id/pictureImageView"
+        android:layout_width="match_parent"
+        android:layout_height="268dp"
+        android:layout_margin="8dp"
+        app:srcCompat="@drawable/imagetoset" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="51dp"
+        android:layout_height="49dp"
+        android:layout_gravity="right"
+        app:srcCompat="@drawable/email_close" />
+
     <EditText
         android:id="@+id/cont_letter"
         android:layout_width="match_parent"

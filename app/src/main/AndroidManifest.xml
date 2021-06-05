@@ -25,6 +25,16 @@
         <activity android:name=".InboxView"/>
         <activity android:name=".SelectWritingpad"/>
 
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="org.techtown.DGU.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/external" />
+        </provider>
     </application>
 
 </manifest>
