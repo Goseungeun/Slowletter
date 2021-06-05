@@ -25,7 +25,7 @@ public class Weather extends AppCompatActivity {
     }
 
     public void getWeatherInfo(){
-        if()
+
     }
 
 }
