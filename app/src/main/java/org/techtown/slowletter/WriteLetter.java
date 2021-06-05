@@ -13,7 +13,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Build;
+
+import android.os.AsyncTask;
+
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -32,8 +34,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import android.widget.Toast;
+
+
+
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
+
 import androidx.core.content.FileProvider;
 
 
@@ -42,8 +49,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.FileProvider;
 
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.File;
+import java.io.InputStream;
+import java.net.URL;
+
+
 import java.io.File;
 import java.io.IOException;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -79,15 +95,14 @@ public class WriteLetter extends AppCompatActivity {
     private EditText contents;
     private EditText receivedate;
 
-///////
+
+    private ImageView weatherIcon;
+
     final static int TAKE_PICTURE = 1;
     String mCurrentPhotoPath;
     final static int REQUEST_TAKE_PHOTO = 1;
 
 
-
-
-///////
 
     DatePickerDialog.OnDateSetListener myDatePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -111,6 +126,9 @@ public class WriteLetter extends AppCompatActivity {
          contents = (EditText) findViewById(R.id.cont_letter);
          receivedate = (EditText)findViewById(R.id.receivedate);
 
+         weatherIcon = (ImageView)findViewById(R.id.weatherIcon);
+
+
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if(checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) { Log.d(TAG, "권한 설정 완료"); }
             else {
@@ -118,6 +136,7 @@ public class WriteLetter extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
             }
         }
+
 
 
         //받는 날짜 클릭시 날짜 설정하는 datepicker 실행
@@ -193,6 +212,10 @@ public class WriteLetter extends AppCompatActivity {
                 }
             }
         });
+
+        //Weather 실행
+        Weather weather = new Weather();
+        weather.GetResult();
 
     }
 
@@ -531,6 +554,108 @@ public class WriteLetter extends AppCompatActivity {
         }).show();
 
     }
+
+    public class Weather {
+
+        //청주 날씨 정보 주소
+        private static final String WEATHER_URL = "http://www.weather.go.kr/wid/queryDFSRSS.jsp?zone=4311259000";
+
+        // 입력 스트림, InputStream ( 날씨 누리에서 데이터를 받을 스트림 객체 )
+        InputStream inputStream;
+
+        String WeatherText = null;          //파싱으로 날씨정보 받은거 저장용
+        //ImageView weatherIcon;      //Icon Image
+
+        //asyncTask 안쓰면 다운시킴.
+        class WeatherHttpAsyncTask extends AsyncTask<String,Void,String> {
+
+            //메서드가 실제로 통신 할 때 작동하는 함수
+            @Override
+            protected String doInBackground(String... strings) {
+                //파싱 시작
+                try {
+                    URL url = new URL(WEATHER_URL);     // 인터넷 주소 처리.
+                    inputStream = url.openStream(); // xml데이터를 입력 스트림으로 받는다.
+                    WeatherText = xmlParsing();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                return WeatherText;
+            }
+
+            //통신이 끝난 후 마무리작업(UI작업 등)을 하는 함수
+            @Override
+            protected void onPostExecute(String s)
+            {
+                super.onPostExecute(s);
+                if(WeatherText!=null){
+                    switch(WeatherText){
+                        case "맑음": weatherIcon.setImageResource(R.drawable.weather_icon_1);break;
+                        case "구름 조금": weatherIcon.setImageResource(R.drawable.weather_icon_2);break;
+                        case "구름 많음": weatherIcon.setImageResource(R.drawable.weather_icon_3);break;
+                        case "흐림": weatherIcon.setImageResource(R.drawable.weather_icon_4);break;
+                        case "비": weatherIcon.setImageResource(R.drawable.weather_icon_5);break;
+                        case "눈/비": weatherIcon.setImageResource(R.drawable.weather_icon_6);break;
+                        case "눈": weatherIcon.setImageResource(R.drawable.weather_icon_7);break;
+                    }
+
+                }
+            }
+
+        }
+
+
+        //결과물 실행할 함수
+        public void GetResult(){
+            WeatherHttpAsyncTask task = new WeatherHttpAsyncTask();
+            task.execute();
+        }
+
+
+
+        //오늘의 날씨 정보를 parsing받기
+        public String xmlParsing() {
+            String result = null;
+
+            try {
+                String tag = "";        // xml 태그명 저장 변수
+
+                // parserfactory 생성
+                XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+
+                //parser 생성
+                XmlPullParser parser = factory.newPullParser();
+                parser.setInput(inputStream, "UTF-8");
+
+
+                // xml 문서의 요소 위치를 변수 eventType으로 저장.
+                int eventType = parser.getEventType();
+
+                //데이터 받아오기
+                while (eventType != XmlPullParser.END_DOCUMENT) {
+                    switch (eventType)
+                    {
+                        case XmlPullParser.START_TAG:
+                            tag = parser.getName();     // 시작 태그의 이름을 가져온다.
+                            break;
+                        case XmlPullParser.TEXT:
+                            if (tag.equals("wfKor")) {
+                                result = parser.getText();
+                            }
+                            break;
+                    }
+                    if(result!=null){ break;}
+                    eventType = parser.next();
+                }
+            }catch (Exception e) {
+                e.printStackTrace();
+            }
+
+            return result;
+        }
+    }
+
 
 }
 
