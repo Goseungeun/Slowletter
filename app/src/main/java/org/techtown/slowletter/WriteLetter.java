@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -12,14 +13,21 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+
+import android.graphics.Color;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.core.content.FileProvider;
+
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -27,9 +35,14 @@ import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+
+
+
+import petrov.kristiyan.colorpicker.ColorPicker;
 
 
 public class WriteLetter extends AppCompatActivity {
@@ -49,6 +62,11 @@ public class WriteLetter extends AppCompatActivity {
     int mMode = AppConstants.MODE_INSERT;
 
     Calendar myCalendar = Calendar.getInstance();
+    private Button cancel;
+    private Button send;
+    private Button writingpad;
+    private EditText contents;
+    private EditText receivedate;
 
 
 
@@ -61,16 +79,19 @@ public class WriteLetter extends AppCompatActivity {
             updateLabel();
         }
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.write_letter);
 
-        Button cancel = (Button)findViewById(R.id.cancelbutton);
-        Button send = (Button)findViewById(R.id.sendbutton);
-        Button writingpad = (Button)findViewById(R.id.button3);
-        TextView contents = (TextView)findViewById(R.id.cont_letter);
-        EditText receivedate = (EditText)findViewById(R.id.receivedate);
+
+         cancel = (Button)findViewById(R.id.cancelbutton);
+         send = (Button)findViewById(R.id.sendbutton);
+         writingpad = (Button)findViewById(R.id.changeback);
+         contents = (EditText) findViewById(R.id.cont_letter);
+         receivedate = (EditText)findViewById(R.id.receivedate);
+
 
 
         //받는 날짜 클릭시 날짜 설정하는 datepicker 실행
@@ -81,14 +102,16 @@ public class WriteLetter extends AppCompatActivity {
             }
         });
 
-        //편지지 배경 선택 버튼 클릭시 편지지 배경 선택 화면으로 넘어감
+
+        //편지지 배경 선택 버튼 클릭시 색상 선택 다이얼로그 실행
         writingpad.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(getApplicationContext(),SelectWritingpad.class);
-                startActivity(intent);
+                openColorPicker();
             }
+
         });
+
 
         pictureImageView = (ImageView)findViewById(R.id.pictureImageView);
         pictureImageView.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +124,7 @@ public class WriteLetter extends AppCompatActivity {
                 }
             }
         });
+
 
 
 
@@ -138,6 +162,7 @@ public class WriteLetter extends AppCompatActivity {
         EditText receivedate = (EditText)findViewById(R.id.receivedate);
         receivedate.setText(sdf.format(myCalendar.getTime()));
     }
+
 
     public void setPicture(String picturePath, int sampleSize) {
         BitmapFactory.Options options = new BitmapFactory.Options();
@@ -333,6 +358,37 @@ public class WriteLetter extends AppCompatActivity {
 
 
 
+
+
+    public void openColorPicker() {
+        final ColorPicker colorPicker = new ColorPicker(this);
+        ArrayList<String> colors = new ArrayList<>();   //color 넣을 list
+
+        colors.add("#FFE4E1");
+        colors.add("#FFEBCD");
+        colors.add("#FFFFE0");
+        colors.add("#FFF8DC");
+        colors.add("#FAEBD7");
+        colors.add("#FFEFD5");
+        colors.add("#FFFACD");
+        colors.add("#F5F5DC");
+        colors.add("#FAF0E6");
+        colors.add("#FDF5E6");
+
+
+        colorPicker.setColors(colors).setColumns(5).setRoundColorButton(true).setOnChooseColorListener(new ColorPicker.OnChooseColorListener(){
+            @Override
+            public void onChooseColor(int position, int color){
+               contents.setBackgroundColor(color);
+            }
+
+            @Override
+            public void onCancel(){
+
+            }
+        }).show();
+
+    }
 
 }
 
