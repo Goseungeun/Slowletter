@@ -61,7 +61,7 @@ public class InboxList extends AppCompatActivity {
 
         LetterDatabase db = LetterDatabase.getInstance(getApplicationContext());
         if(db!=null){
-            String sql = "select * from "+LetterDatabase.TABLE_LETTER;
+            String sql = "select * from "+LetterDatabase.TABLE_LETTER +" order by RECEIVEDATE asc";
             Cursor cursor = db.rawQUery(sql);
             Log.i("test", "!!!cursor여기여기다!!!!" + cursor);
             //( 보낸날짜 구분자 '.', 받는날짜 구분자 '/')
