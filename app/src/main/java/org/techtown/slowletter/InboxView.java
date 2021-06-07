@@ -2,6 +2,7 @@ package org.techtown.slowletter;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,7 @@ public class InboxView extends AppCompatActivity {
 
         Tv_date = findViewById(R.id.textView_date);
         weatherIcon= findViewById(R.id.review_weatherIcon);
-        pictureImageView=findViewById(R.id.review_weatherIcon);
+        pictureImageView=findViewById(R.id.review_pictureImageView);
         cont_letter=findViewById(R.id.review_cont_letter);
 
         //뒤로가기 버튼
@@ -73,9 +74,9 @@ public class InboxView extends AppCompatActivity {
 
                 String WeatherText = cursor.getString(cursor.getColumnIndex("WEATHER"));
                 imageWeather(WeatherText);
-
+                String picturePath = cursor.getString(cursor.getColumnIndex("PICTURE"));
                 //pictureImageView 설정할 것
-
+                pictureImageView.setImageURI(Uri.parse("file://" + picturePath));
                 cont_letter.setText(cursor.getString(cursor.getColumnIndex("CONTEXT")));
             }
             cursor.close();

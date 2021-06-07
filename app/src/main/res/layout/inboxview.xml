@@ -77,7 +77,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="오늘의 날씨 :   " />
+                    android:text="그 때의 날씨 :   " />
 
                 <ImageView
                     android:id="@+id/review_weatherIcon"

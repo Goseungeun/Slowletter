@@ -26,8 +26,6 @@ public class InboxList extends AppCompatActivity {
 
     GridView inboxlist;
     InboxAdapter inboxlist_adpater;
-    //임의로 dday배열 설정
-    long []d_day_array = new long[100];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -181,7 +179,7 @@ public class InboxList extends AppCompatActivity {
                         intent.putExtra("id",items.get(position).getId());
                         startActivity(intent);
                     }else{
-                        Toast toast =Toast.makeText(getApplicationContext(),"편지가 열리기까지\n"+Math.abs(d_day_array[position])+"일 만큼 남았습니다", Toast.LENGTH_SHORT);
+                        Toast toast =Toast.makeText(getApplicationContext(),"편지가 열리기까지\n"+Math.abs(d_day)+"일 만큼 남았습니다", Toast.LENGTH_SHORT);
                         toast.setGravity(Gravity.CENTER,0,0);
                         toast.show();
                     }

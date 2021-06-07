@@ -4,11 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.location.SettingInjectorService;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import java.io.File;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -48,7 +51,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        setPicturePath();
+
         openDatabase();
+    }
+
+    private void setPicturePath() {
+        String sdcardPath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        AppConstants.FOLDER_PHOTO = sdcardPath + File.separator + "photo";
     }
 
     //DB 열기
