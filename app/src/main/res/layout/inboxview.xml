@@ -27,7 +27,7 @@
             app:tint="@color/text_color_deep_purple" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/textView_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -48,18 +48,70 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/button"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="22dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginEnd="22dp"
-        android:layout_marginRight="22dp"
-        android:layout_marginBottom="22dp"
-        android:text="편지내용"
-        android:textColor="@color/text_color_deep_purple"
-        app:backgroundTint="@color/line_color_light_purple" />
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginRight="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="49dp"
+                android:orientation="horizontal">
+
+                <View
+                    android:id="@+id/view3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="그 때의 날씨 :   " />
+
+                <ImageView
+                    android:id="@+id/review_weatherIcon"
+                    android:layout_width="51dp"
+                    android:layout_height="49dp"
+                    android:layout_gravity="right"
+                    app:srcCompat="@drawable/email_close" />
+
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/review_pictureImageView"
+                android:layout_width="match_parent"
+                android:layout_height="248dp"
+                app:srcCompat="@drawable/imagetoset" />
+
+            <TextView
+                android:id="@+id/review_cont_letter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:background="@color/background"
+                android:enabled="true"
+                android:freezesText="true"
+                android:gravity="top"
+                android:inputType="textMultiLine|text"
+                android:minHeight="200dp"
+                android:padding="10dp"
+                android:textColor="@color/text_color_deep_purple" />
+
+        </LinearLayout>
+    </ScrollView>
 
 
 </LinearLayout>

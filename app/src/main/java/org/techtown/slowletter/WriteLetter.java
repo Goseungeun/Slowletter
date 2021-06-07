@@ -212,11 +212,10 @@ public class WriteLetter extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
         String _writeDate = sdf.format(time);
 
-        String _receivedate= receivedate.getText().toString().substring(10);
+        String _receivedate= receivedate.getText().toString().substring(11);
         String _context = ""+contents.getText().toString();
         String _weather = ""+weather.WeatherText;
-        //String _picture= savepicture();
-        String _picture="";
+        String _picture= savepicture();
 
         String sql = "insert into " + LetterDatabase.TABLE_LETTER +
                 "(WRITEDATE, RECEIVEDATE, CONTEXT, BACKCOLOR, WEATHER, PICTURE) values(" +
@@ -226,7 +225,6 @@ public class WriteLetter extends AppCompatActivity {
                 "'"+ _backcolor + "', " +
                 "'"+ _weather + "', " +
                 "'"+ _picture + "')";
-        Log.i(TAG, "!!!여기다!!!!" + sql);
         LetterDatabase db = LetterDatabase.getInstance(getApplicationContext());
         db.execSQL(sql);
 
@@ -240,7 +238,6 @@ public class WriteLetter extends AppCompatActivity {
         File photoFolder = new File(AppConstants.FOLDER_PHOTO);
 
         if(!photoFolder.isDirectory()) {
-            Log.d(TAG, "creating photo folder : " + photoFolder);
             photoFolder.mkdirs();
         }
 

@@ -11,6 +11,14 @@ public class Inbox_Item {
     int r_month;
     int r_day;
 
+    //dday
+    int Dday;
+
+
+
+    //DB에서 받아온 id
+    int id;
+
     //편지를 열지 말지 (기준 : d-day)
     boolean letter_open;
 
@@ -22,15 +30,31 @@ public class Inbox_Item {
         this.letter_open = letter_open;
     }
 
-    public Inbox_Item(int s_year, int s_month, int s_day, int r_year, int r_month, int r_day){
+    public Inbox_Item(int s_year, int s_month, int s_day, int r_year, int r_month, int r_day , int _id, int _Dday){
         this.s_year=s_year;
         this.s_month=s_month;
         this.s_day=s_day;
         this.r_year=r_year;
         this.r_month=r_month;
         this.r_day=r_day;
+        this.id=_id;
+        this.Dday= _Dday;
     }
 
+    public int getDday() {
+        return Dday;
+    }
+
+    public void setDday(int dday) {
+        Dday = dday;
+    }
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
     public int getS_year() {
         return s_year;
     }

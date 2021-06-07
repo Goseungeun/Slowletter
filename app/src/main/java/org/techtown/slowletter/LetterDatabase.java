@@ -20,7 +20,7 @@ public class LetterDatabase {
     private SQLiteDatabase db;
     private Context context;
 
-    LetterDatabase(Context context){
+    private LetterDatabase(Context context){
         this.context = context;
     }
 
