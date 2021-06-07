@@ -60,24 +60,24 @@ public class InboxView extends AppCompatActivity {
         if(db!=null){
             String sql = "select * from "+LetterDatabase.TABLE_LETTER +" where _id = "+id;
             Cursor cursor = db.rawQUery(sql);
-            Log.i("test11", "!!!cursor여기여기다!!!!" + sql);
-            Log.i("test11", "!!!cursor여기여기다!!!!" + cursor);
-            //( 보낸날짜 구분자 '.', 받는날짜 구분자 '/')
 
+            //( 보낸날짜 구분자 '.', 받는날짜 구분자 '/')
             if(cursor.getCount()!=0){
                 cursor.moveToNext();
                 //db에서 값 가져오기
                 String db_writedate = cursor.getString(cursor.getColumnIndex("WRITEDATE"));
-                Log.i("test11", "!!!cursor여기여기다!!!!" + db_writedate);
+
                 String[] writedate = db_writedate.split("\\.");
                 Tv_date.setText(writedate[0]+"년 "+writedate[1]+"월 "+writedate[2]+"일로부터 온 편지");
 
                 String WeatherText = cursor.getString(cursor.getColumnIndex("WEATHER"));
                 imageWeather(WeatherText);
                 String picturePath = cursor.getString(cursor.getColumnIndex("PICTURE"));
-                //pictureImageView 설정할 것
+
                 pictureImageView.setImageURI(Uri.parse("file://" + picturePath));
                 cont_letter.setText(cursor.getString(cursor.getColumnIndex("CONTEXT")));
+                cont_letter.setBackgroundColor(cursor.getInt(cursor.getColumnIndex("BACKCOLOR")));
+
             }
             cursor.close();
 

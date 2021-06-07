@@ -61,28 +61,23 @@ public class InboxList extends AppCompatActivity {
         if(db!=null){
             String sql = "select * from "+LetterDatabase.TABLE_LETTER +" order by RECEIVEDATE asc";
             Cursor cursor = db.rawQUery(sql);
-            Log.i("test", "!!!cursor여기여기다!!!!" + cursor);
-            //( 보낸날짜 구분자 '.', 받는날짜 구분자 '/')
 
+            //( 보낸날짜 구분자 '.', 받는날짜 구분자 '/')
             if(cursor.getCount()!=0){
                 while(cursor.moveToNext()){
                     //db에서 값 가져오기
                     String db_writedate=cursor.getString(cursor.getColumnIndex("WRITEDATE"));
                     writedate = db_writedate.split("\\.");
-                    Log.i("test", "!!!여기여기다!!!!" + writedate[0]+writedate[1]+writedate[2]);
-
 
                     String db_receivedate=cursor.getString(cursor.getColumnIndex("RECEIVEDATE"));
                     receivedate = db_receivedate.split("/");
-                    receivedate[0].trim();
-                    Log.i("test", "!!!여기여기다!!!!" +receivedate[0]+receivedate[1]+receivedate[2]);
 
                     int db_id = cursor.getInt(cursor.getColumnIndex("_id"));
-                    Log.i("test", "!!!여기여기다!!!!" + db_id);
+
                     //D-day  계산
                     //오늘 날짜
                     Calendar today = Calendar.getInstance();
-                    Log.i("test", "!!!오늘 날짜는!!!!" +today);
+
                     //받을 날짜
                     Calendar receive_day= Calendar.getInstance();
                     receive_day.set(Integer.parseInt(receivedate[0]),Integer.parseInt(receivedate[1])-1,Integer.parseInt(receivedate[2]));
@@ -97,7 +92,7 @@ public class InboxList extends AppCompatActivity {
                     int Dday = Long.valueOf(d_day).intValue();
 
                     inboxlist_adpater.addItem(new Inbox_Item(Integer.parseInt(writedate[0]),Integer.parseInt(writedate[1]),Integer.parseInt(writedate[2]),Integer.parseInt(receivedate[0]),Integer.parseInt(receivedate[1]),Integer.parseInt(receivedate[2]),db_id,Dday));
-                    Log.i("test", "!!!여기여기다!!!!" + sql);}
+                    }
 
 
                 cursor.close();

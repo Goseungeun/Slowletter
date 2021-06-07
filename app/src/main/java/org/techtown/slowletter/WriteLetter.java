@@ -225,7 +225,6 @@ public class WriteLetter extends AppCompatActivity {
                 "'"+ _backcolor + "', " +
                 "'"+ _weather + "', " +
                 "'"+ _picture + "')";
-        Log.i(TAG, "!!!여기다!!!!" + sql);
         LetterDatabase db = LetterDatabase.getInstance(getApplicationContext());
         db.execSQL(sql);
 
@@ -239,7 +238,6 @@ public class WriteLetter extends AppCompatActivity {
         File photoFolder = new File(AppConstants.FOLDER_PHOTO);
 
         if(!photoFolder.isDirectory()) {
-            Log.i(TAG, "creating photo folder : " + photoFolder);
             photoFolder.mkdirs();
         }
 
