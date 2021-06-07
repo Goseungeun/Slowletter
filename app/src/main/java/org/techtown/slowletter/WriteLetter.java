@@ -212,7 +212,7 @@ public class WriteLetter extends AppCompatActivity {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
         String _writeDate = sdf.format(time);
 
-        String _receivedate= receivedate.getText().toString().substring(10);
+        String _receivedate= receivedate.getText().toString().substring(11);
         String _context = ""+contents.getText().toString();
         String _weather = ""+weather.WeatherText;
         //String _picture= savepicture();

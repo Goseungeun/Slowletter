@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.location.SettingInjectorService;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,6 +12,9 @@ import android.widget.Toast;
 
 
 public class MainActivity extends AppCompatActivity {
+
+
+    public static LetterDatabase mDatabase = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,5 +47,21 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        openDatabase();
+    }
+
+    //DB 열기
+    public void openDatabase() {
+        // open database
+        if (mDatabase != null) {
+            mDatabase.close();
+            mDatabase = null;
+        }
+
+        mDatabase = LetterDatabase.getInstance(this);
+        boolean isOpen = mDatabase.open();
+
     }
 }
+

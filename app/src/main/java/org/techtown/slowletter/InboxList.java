@@ -2,7 +2,10 @@ package org.techtown.slowletter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,19 +47,65 @@ public class InboxList extends AppCompatActivity {
         inboxlist = findViewById(R.id.inbox_gridview);
         inboxlist_adpater = new InboxAdapter(this);
 
-        //DB에서 불러와야 할 내용
-        inboxlist_adpater.addItem(new Inbox_Item(2015,10,20,2018,10,20));
-        inboxlist_adpater.addItem(new Inbox_Item(2016,10,21,2017,10,20));
-        inboxlist_adpater.addItem(new Inbox_Item(2017,5,7,2021,10,20));
-        inboxlist_adpater.addItem(new Inbox_Item(2019,10,11,2022,10,20));
-        inboxlist_adpater.addItem(new Inbox_Item(2020,1,1,2022,5,20));
-        inboxlist_adpater.addItem(new Inbox_Item(2020,5,5,2023,10,20));
-        inboxlist_adpater.addItem(new Inbox_Item(2020,7,21,2023,11,20));
-        inboxlist_adpater.addItem(new Inbox_Item(2020,8,19,2023,11,20));
-        inboxlist_adpater.addItem(new Inbox_Item(2021,4,4,2023,11,20));
+        //DBconnection
+        DBconnection();
 
-        inboxlist.setAdapter(inboxlist_adpater);
 
+
+    }
+
+    private void DBconnection() {
+
+        String [] writedate = new String[3];
+        String [] receivedate = new String[3];
+
+        LetterDatabase db = LetterDatabase.getInstance(getApplicationContext());
+        if(db!=null){
+            String sql = "select * from "+LetterDatabase.TABLE_LETTER;
+            Cursor cursor = db.rawQUery(sql);
+            Log.i("test", "!!!cursor여기여기다!!!!" + cursor);
+            //( 보낸날짜 구분자 '.', 받는날짜 구분자 '/')
+
+            if(cursor.getCount()!=0){
+                while(cursor.moveToNext()){
+                    //db에서 값 가져오기
+                    String db_writedate=cursor.getString(cursor.getColumnIndex("WRITEDATE"));
+                    writedate = db_writedate.split("\\.");
+                    Log.i("test", "!!!여기여기다!!!!" + writedate[0]+writedate[1]+writedate[2]);
+
+
+                    String db_receivedate=cursor.getString(cursor.getColumnIndex("RECEIVEDATE"));
+                    receivedate = db_receivedate.split("/");
+                    receivedate[0].trim();
+                    Log.i("test", "!!!여기여기다!!!!" +receivedate[0]+receivedate[1]+receivedate[2]);
+
+                    int db_id = cursor.getInt(cursor.getColumnIndex("_id"));
+                    Log.i("test", "!!!여기여기다!!!!" + db_id);
+                    //D-day  계산
+                    //오늘 날짜
+                    Calendar today = Calendar.getInstance();
+                    Log.i("test", "!!!오늘 날짜는!!!!" +today);
+                    //받을 날짜
+                    Calendar receive_day= Calendar.getInstance();
+                    receive_day.set(Integer.parseInt(receivedate[0]),Integer.parseInt(receivedate[1])-1,Integer.parseInt(receivedate[2]));
+
+                    /// D-day 계산 시작
+                    //일단위로 값 가져오기
+                    long long_receive_day = receive_day.getTimeInMillis()/(24*60*60*1000);
+                    long long_today = today.getTimeInMillis()/(24*60*60*1000);
+
+                    //두 날짜 빼기
+                    long d_day = long_today-long_receive_day;
+                    int Dday = Long.valueOf(d_day).intValue();
+
+                    inboxlist_adpater.addItem(new Inbox_Item(Integer.parseInt(writedate[0]),Integer.parseInt(writedate[1]),Integer.parseInt(writedate[2]),Integer.parseInt(receivedate[0]),Integer.parseInt(receivedate[1]),Integer.parseInt(receivedate[2]),db_id,Dday));
+                    Log.i("test", "!!!여기여기다!!!!" + sql);}
+
+
+                cursor.close();
+                inboxlist.setAdapter(inboxlist_adpater);
+            }
+        }
 
     }
 
@@ -94,25 +143,13 @@ public class InboxList extends AppCompatActivity {
             //DB에서 값을 가져올 때 바꿔야할 값 //지금 임의로 설정한 값임
             Inbox_Item inbox_item = items.get(position);
 
-            //오늘 날짜
-            Calendar today = Calendar.getInstance();
-            //받을 날짜
-            Calendar receive_day= Calendar.getInstance();
-            receive_day.set(inbox_item.r_year,inbox_item.r_month,inbox_item.r_day);
 
-            /// D-day 계산 시작
-            //일단위로 값 가져오기
-            long long_receive_day = receive_day.getTimeInMillis()/(24*60*60*1000);
-            long long_today = today.getTimeInMillis()/(24*60*60*1000);
-
-            //두 날짜 빼기
-            long d_day = long_today-long_receive_day;
-            d_day_array[position]=d_day;
             //receive day가 현재보다 미래면 -
             //receive day가 현재보다 과거면 + 가 나온다.
             ///D-day 계산 끝
 
             //inbox_item.xml과 연결
+            int d_day = items.get(position).getDday();
 
             if(d_day>=0){
                 //d-day가 지났으면 open
@@ -141,8 +178,7 @@ public class InboxList extends AppCompatActivity {
                     if(selection.letter_open){
                         //intent를 이용해서 InboxView에 값 넘겨주기
                         Intent intent = new Intent(getApplicationContext(),InboxView.class);
-                        /*intent.putExtra("position",position);
-                        intent.putExtra("item", (Parcelable) items.get(position));*/
+                        intent.putExtra("id",items.get(position).getId());
                         startActivity(intent);
                     }else{
                         Toast toast =Toast.makeText(getApplicationContext(),"편지가 열리기까지\n"+Math.abs(d_day_array[position])+"일 만큼 남았습니다", Toast.LENGTH_SHORT);
