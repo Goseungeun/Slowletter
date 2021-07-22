@@ -17,5 +17,5 @@ Slow letter는 편지를 작성하는 어플리케이션이기 때문에 기본�
 
 ## Team member
 * Ka eul
-* Im
+* Lim jihyun
 * Go seungeun
